@@ -153,6 +153,7 @@ if __name__ == "__main__":
     parser.add_argument('--host', action="store", dest="host", default=None)
     parser.add_argument('--port', action="store", dest="port", type=int, default=None)
     parser.add_argument('--name', action="store", dest="name", default=None)
+    parser.add_argument('--gui', action="store_true", dest="gui", help="Launch Tkinter dark GUI")
     given_args = parser.parse_args()
 
     host = given_args.host or input("Server IP [127.0.0.1]: ").strip() or SERVER_HOST
@@ -160,4 +161,8 @@ if __name__ == "__main__":
     name = given_args.name or input("Nickname: ").strip()
 
     client = ChatClient(name=name, port=port, host=host)
-    client.run_console()
+    if given_args.gui:
+        import client_gui
+        client_gui.run_gui(client, send, receive)
+    else:
+        client.run_console()
