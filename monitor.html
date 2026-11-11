@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DaemonDM // chatd-watch</title>
+  <style>
+    body {
+      background-color: #0d0f12;
+      color: #c5c8c6;
+      font-family: Consolas, "Courier New", monospace;
+      margin: 0;
+      padding: 20px;
+    }
+    .topbar {
+      border: 1px solid #2b303b;
+      background: #14171d;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .brand { color: #50fa7b; font-weight: bold; font-size: 16px; }
+    .metrics span {
+      margin-left: 18px;
+      padding: 4px 8px;
+      background: #0d0f12;
+      border: 1px solid #2b303b;
+    }
+    .val { color: #8be9fd; font-weight: bold; }
+    #output {
+      background: #08090c;
+      border: 1px solid #2b303b;
+      height: 75vh;
+      overflow-y: auto;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .line { border-bottom: 1px dashed #1b1f27; padding: 2px 0; }
+    .ts { color: #6272a4; }
+    .tag-PUBLIC { color: #8be9fd; }
+    .tag-PRIVATE { color: #ff79c6; }
+    .tag-JOIN, .tag-LEAVE { color: #50fa7b; }
+    .tag-RATELIMIT, .tag-ERROR, .tag-REJECT { color: #ff5555; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">DaemonDM // chatd-watch (read-only stream)</div>
+    <div class="metrics">
+      socket: <span id="status" class="val">connecting</span>
+      active_peers: <span id="users" class="val">0</span>
+      routed_msgs: <span id="msgs" class="val">0</span>
+    </div>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    const wsPort = new URLSearchParams(window.location.search).get("ws") || "8765";
+    const ws = new WebSocket(`ws://${window.location.hostname || "localhost"}:${wsPort}`);
+    const output = document.getElementById("output");
+    const usersEl = document.getElementById("users");
+    const msgsEl = document.getElementById("msgs");
+    const statusEl = document.getElementById("status");
+
+    ws.onopen = () => { statusEl.textContent = "ESTABLISHED"; };
+    ws.onclose = () => { statusEl.textContent = "CLOSED"; statusEl.style.color = "#ff5555"; };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      usersEl.textContent = data.users;
+      msgsEl.textContent = data.messages;
+
+      const div = document.createElement("div");
+      div.className = "line";
+      div.innerHTML = `<span class="ts">[${data.time}]</span> ` +
+                      `<span class="tag-${data.tag}">[${data.tag}]</span> ` +
+                      `<span class="txt"></span>`;
+      div.querySelector(".txt").textContent = data.text;
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    };
+  </script>
+</body>
+</html>

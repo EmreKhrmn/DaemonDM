@@ -3,6 +3,7 @@ import struct
 import threading
 import argparse
 import time
+import monitor_server
 
 SERVER_HOST = '127.0.0.1'
 BUF_SIZE = 4096
@@ -68,6 +69,9 @@ def log_event(tag, text):
         print(line)
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write(line + "\n")
+        u_count = len(clientmap)
+        m_count = msg_counter
+    monitor_server.push_event(ts, tag, text, u_count, m_count)
 
 
 def broadcast_chat(msg_str):
@@ -245,9 +249,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DaemonDM Server')
     parser.add_argument('--host', action="store", dest="host", default=SERVER_HOST)
     parser.add_argument('--port', action="store", dest="port", type=int, default=5000)
+    parser.add_argument('--relay-port', action="store", dest="relay_port", type=int, default=5001)
+    parser.add_argument('--http-port', action="store", dest="http_port", type=int, default=8000)
+    parser.add_argument('--ws-port', action="store", dest="ws_port", type=int, default=8765)
     given_args = parser.parse_args()
 
     try:
-        tcp_listener(given_args.host, given_args.port, False)
+        threading.Thread(target=tcp_listener, args=(given_args.host, given_args.port, False), daemon=True).start()
+        threading.Thread(target=tcp_listener, args=(given_args.host, given_args.relay_port, True), daemon=True).start()
+        log_event("BOOT", "DaemonDM listening (chat:%d, relay:%d, http:%d, ws:%d)" % (
+            given_args.port, given_args.relay_port, given_args.http_port, given_args.ws_port
+        ))
+        monitor_server.start_monitoring(given_args.host, given_args.http_port, given_args.ws_port)
     except KeyboardInterrupt:
         print("\nShutting down DaemonDM...")
