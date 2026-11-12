@@ -1,13 +1,9 @@
 # DaemonDM
 DaemonDM is a multi-user chat system.
-# DaemonDM - Multi-User TCP Chat & Live Monitor
 
-**Network Programming - Project 02**  
-**App Name:** DaemonDM (Daemon Direct Messenger)
+For Project 02, I built **DaemonDM**, a multi-user TCP chat system in Python. Instead of starting from scratch, I extended the socket patterns we covered in lecture and split the project into modular files so it is easier to read and test.
 
-For Project 02, I built **DaemonDM**, a multi-user TCP chat system in Python. Instead of starting from scratch, I extended the socket patterns we covered in class (`03a-SimpleChatServer.py`, `05a-ws-http-server.py`, `06a-ws-poll.py`, and `06-proxy-Proxy.py`) and split the project into modular files so it is easier to read and test.
-
-It supports public chat, private direct messages (DMs), automatic nickname collision handling, a per-user spam rate limiter, an optional TCP relay that adds the `*` prefix, and a live browser monitor (`chatd-watch`) powered by WebSockets. I also built a dark-themed Tkinter GUI and a visual launcher (`main.py`) so I wouldn't have to open 6 different terminal windows every time I tested it.
+It supports public chat, private direct messages (DMs), automatic nickname collision handling, a per-user spam rate limiter, an optional TCP relay that adds the `*` prefix, and a live browser monitor (`chatd-watch`) powered by WebSockets. I also built a dark-themed Tkinter GUI and a visual launcher (`main.py`) 
 
 ![DaemonDM Control Deck](screenshots/control_deck.png)
 
@@ -27,9 +23,9 @@ Only two external packages are used (`websockets` for the live browser monitor a
 
 ---
 
-## 2. How the Code is Organized (File Breakdown)
+## 2. How the Code is Organized 
 
-I split the code into 7 files so the server, monitor, client, GUI, and relay aren't all crammed into one giant script:
+I split the code into 7 files so that the server, monitor, client, GUI, and relay aren't all crammed into one giant script:
 
 - **`chat_server.py` (Core TCP Server):**
   This is the main server. It starts two TCP listeners using `tcp_listener()`: one on port `5000` for normal direct clients (`is_relay=False`) and one on port `5001` for connections coming from the relay (`is_relay=True`). Every time a client connects, `sock.accept()` hands the socket off to a daemon thread running `handle_chat_client()`. It stores active users in the `clientmap` dictionary, checks for spam in `check_rate_limit()`, writes logs to `daemondm.log` inside `log_event()`, and forwards live stats to `monitor_server.py`.
