@@ -156,9 +156,14 @@ if __name__ == "__main__":
     parser.add_argument('--gui', action="store_true", dest="gui", help="Launch Tkinter dark GUI")
     given_args = parser.parse_args()
 
-    host = given_args.host or input("Server IP [127.0.0.1]: ").strip() or SERVER_HOST
-    port = given_args.port or int(input("Port [5000]: ").strip() or "5000")
-    name = given_args.name or input("Nickname: ").strip()
+    if given_args.gui:
+        host = given_args.host or SERVER_HOST
+        port = given_args.port or 5000
+        name = given_args.name or "user"
+    else:
+        host = given_args.host or input("Server IP [127.0.0.1]: ").strip() or SERVER_HOST
+        port = given_args.port or int(input("Port [5000]: ").strip() or "5000")
+        name = given_args.name or input("Nickname: ").strip()
 
     client = ChatClient(name=name, port=port, host=host)
     if given_args.gui:

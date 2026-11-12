@@ -1,0 +1,21 @@
+[2026-11-12 12:57:32] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 12:57:48] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 13:00:00] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 13:03:08] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 13:05:40] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 13:05:42] [JOIN] user1 connected (direct) from 127.0.0.1:49933
+[2026-11-12 13:05:48] [PUBLIC] [user1 -> ALL] hello
+[2026-11-12 13:05:57] [PRIVATE] [user1 -> user1] hello 2
+[2026-11-12 13:06:11] [PUBLIC] [user1 -> ALL] hello
+[2026-11-12 13:06:19] [LEAVE] user1 disconnected
+[2026-11-12 13:09:38] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-12 13:09:42] [JOIN] user1 connected (direct) from 127.0.0.1:56259
+[2026-11-12 13:10:04] [JOIN] user2 connected (direct) from 127.0.0.1:61221
+[2026-11-12 13:10:22] [JOIN] user3 connected (direct) from 127.0.0.1:61628
+[2026-11-12 13:11:03] [PRIVATE] [user1 -> user2] hello this is a private message to user2
+[2026-11-12 13:11:14] [PRIVATE] [user2 -> user1] ok
+[2026-11-12 13:11:18] [PUBLIC] [user1 -> ALL] ok
+[2026-11-12 13:11:34] [PUBLIC] [user1 -> ALL] hello
+[2026-11-12 13:11:50] [PRIVATE] [user1 -> user3] this is a private message to user3 test 1
+[2026-11-12 13:11:53] [LEAVE] user1 disconnected
+[2026-11-12 13:12:03] [LEAVE] user3 disconnected
