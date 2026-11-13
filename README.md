@@ -145,6 +145,38 @@ Connected two Python clients (`user1` and `user2`). Sent public messages back an
 ### T02 - Private Chat (Direct Messages)
 Connected three clients. Sent a private message between two of them and verified that the third client did not receive it. Also tested `/msg` to a nickname that isn't online to verify the server returns `ERROR: User '...' is not online.`
 
-![T02 Private Chat](screenshots/T02_private_chat.png)
+![T02 Private Chat I](screenshots/T02_private_chat_1.png)
+![T02 Private Chat II](screenshots/T02_private_chat_2.png)
+![T02 Private Chat III](screenshots/T02_private_chat_3.png)
 
 ### T03 - Nicknames & Reserved `*` Prefix
+Connected two clients asking for the same nickname (`user1`) and showed the second one automatically got assigned `user11`. Also tried connecting directly on port `5000` with `*hacker` and showed the server rejecting it.
+
+![T03 Nicknames I](screenshots/T03_nicknames_1.png)
+![T03 Nicknames II](screenshots/T03_nicknames_2.png)
+![T03 Nicknames III](screenshots/T03_nicknames_3.png)
+
+### T04 - Disconnection & User List Cleanup
+Used the `EXIT` button / command and closed a client window. Verified that the server stayed up, removed the user from the active list, and notified the remaining connected clients.
+
+![T04 Disconnection](screenshots/T04_disconnect.png)
+
+### T05 - Rate Limiting
+Rapidly sent more than 5 messages in under 5 seconds from a single client. The server muted the client for 10 seconds, sent back the rate-limit error notice, and recorded `RATELIMIT` in the log.
+
+![T05 Rate Limiting](screenshots/T05_ratelimit.png)
+
+### T06 - Logs & Live Monitoring (`chatd-watch`)
+Checked `daemondm.log` alongside the live monitor page at `http://127.0.0.1:8000`. Verified that public/private events and counters update live over WebSockets, a public broadcast only adds `1` to `routed_msgs`, and closing the browser tab doesn't interrupt the chat.
+
+![T06 Logs and Monitoring I](screenshots/T06_monitor_logs_1.png)
+![T06 Logs and Monitoring II](screenshots/T06_monitor_logs_2.png)
+![T06 Logs and Monitoring III](screenshots/T06_monitor_logs_3.png)
+![T06 Logs and Monitoring IV](screenshots/T06_monitor_logs_4.png)
+
+### T07 - Optional Relay (`*` Prefix)
+Started `chat_relay.py` on port `6000` and connected a client through it. Verified the client was assigned the `*` prefix, could chat with direct clients, and cleaned up its connection when exiting.
+
+![T07 Relay I](screenshots/T07_relay_1.png)
+![T07 Relay II](screenshots/T07_relay_2.png)
+![T07 Relay III](screenshots/T07_relay_3.png)
