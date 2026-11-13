@@ -31,19 +31,19 @@ I split the code into 7 files so that the server, monitor, client, GUI, and rela
   This is the main server. It starts two TCP listeners using `tcp_listener()`: one on port `5000` for normal direct clients (`is_relay=False`) and one on port `5001` for connections coming from the relay (`is_relay=True`). Every time a client connects, `sock.accept()` hands the socket off to a daemon thread running `handle_chat_client()`. It stores active users in the `clientmap` dictionary, checks for spam in `check_rate_limit()`, writes logs to `daemondm.log` inside `log_event()`, and forwards live stats to `monitor_server.py`.
 
 - **`monitor_server.py` & `monitor.html` (WebSocket + HTTP Monitor):**
-  Based directly on `05a-ws-http-server.py` and `06a-ws-poll.py` from class. `start_http_server()` runs in a background thread on port `8000` using `SimpleHTTPRequestHandler` to serve `monitor.html`. Meanwhile, `start_ws_server()` runs on the main `asyncio` loop on port `8765`. Whenever `chat_server.py` logs an event, it calls `monitor_server.push_event()`, which uses `asyncio.run_coroutine_threadsafe()` to push a JSON update to any open browser tabs without blocking the TCP chat threads.
+`start_http_server()` runs in a background thread on port `8000` using `SimpleHTTPRequestHandler` to serve `monitor.html`. Meanwhile, `start_ws_server()` runs on the main `asyncio` loop on port `8765`. Whenever `chat_server.py` logs an event, it calls `monitor_server.push_event()`, which uses `asyncio.run_coroutine_threadsafe()` to push a JSON update to any open browser tabs without blocking the TCP chat threads.
 
 - **`chat_client.py` (TCP Client - Console & GUI Entry Point):**
-  Adapted from `03b-SimpleChatClient.py`. When `ChatClient` initializes, it connects to the TCP server, sends `NAME: <nickname>`, and waits for `CLIENT: <assigned_name>` (or an `ERROR:` response). In console mode (`run_console()`), it spawns a background `input_thread()` to read `sys.stdin.readline()` while the main loop listens for incoming messages with `receive()`, so incoming messages never get stuck while you are typing.
+When `ChatClient` initializes, it connects to the TCP server, sends `NAME: <nickname>`, and waits for `CLIENT: <assigned_name>` (or an `ERROR:` response). In console mode (`run_console()`), it spawns a background `input_thread()` to read `sys.stdin.readline()` while the main loop listens for incoming messages with `receive()`, so incoming messages never get stuck while you are typing.
 
 - **`client_gui.py` (Dark-Mode Tkinter UI):**
-  If you pass `--gui` to `chat_client.py`, it loads `run_gui()` from this file. It builds a dark terminal-style window with a scrollable chat log on the left and an `ONLINE PEERS` listbox on the right. Since Tkinter isn't thread-safe, the background receive thread (`gui_recv_loop()`) uses `root.after(0, ...)` to safely update the UI when messages or `USERS:` lists arrive.
+If you pass `--gui` to `chat_client.py`, it loads `run_gui()` from this file. It builds a dark terminal-style window with a scrollable chat log on the left and an `ONLINE PEERS` listbox on the right. Since Tkinter isn't thread-safe, the background receive thread (`gui_recv_loop()`) uses `root.after(0, ...)` to safely update the UI when messages or `USERS:` lists arrive.
 
 - **`chat_relay.py` (Optional `*` Prefix Relay Proxy):**
-  Built on `06-proxy-Proxy.py`. It listens on port `6000`. When a client connects, `handle_client()` reads the initial registration frame using `receive()`. If the client tried to pick a name starting with `*`, the relay rejects it immediately. Otherwise, it prepends `*` to the nickname, opens an upstream socket to the server's relay port (`5001`), sends the modified `NAME: *<nick>` packet, and starts two threads running `forward_stream()` to pipe raw TCP bytes in both directions until either side disconnects.
+It listens on port `6000`. When a client connects, `handle_client()` reads the initial registration frame using `receive()`. If the client tried to pick a name starting with `*`, the relay rejects it immediately. Otherwise, it prepends `*` to the nickname, opens an upstream socket to the server's relay port (`5001`), sends the modified `NAME: *<nick>` packet, and starts two threads running `forward_stream()` to pipe raw TCP bytes in both directions until either side disconnects.
 
 - **`main.py` (Control Deck Launcher):**
-  A small Tkinter control panel that uses `subprocess.Popen` to start/stop `chat_server.py`, `chat_relay.py`, open `http://127.0.0.1:8000` in the default browser, and spawn multiple GUI clients with one click.
+A small Tkinter control panel that uses `subprocess.Popen` to start/stop `chat_server.py`, `chat_relay.py`, open `http://127.0.0.1:8000` in the default browser, and spawn multiple GUI clients with one click.
 
 ---
 
@@ -76,7 +76,7 @@ Every script also works on its own with command-line flags (all addresses and po
 **4. Start clients (GUI or Console):**
 
     # Launch GUI client connected directly to the server
-    python chat_client.py --host 127.0.0.1 --port 5000 --name alice --gui
+    python chat_client.py --host 127.0.0.1 --port 5000 --name alice --gui 
 
     # Launch Console client connected directly to the server
     python chat_client.py --host 127.0.0.1 --port 5000 --name bob
@@ -100,7 +100,7 @@ Every script also works on its own with command-line flags (all addresses and po
 ## 5. Design Notes & Protocol Details
 
 ### Message Framing & Handling TCP Fragmentation
-In `03a-SimpleChatServer.py`, we saw how to prefix messages with their byte length using `socket.htonl()` and `struct.pack()`. I kept that exact approach in `send()` and `receive()`, except I replaced `pickle` with UTF-8 strings and improved `receive()` so it handles fragmented TCP reads properly:
+In our lectures, we saw how to prefix messages with their byte length using `socket.htonl()` and `struct.pack()`. I kept that exact approach in `send()` and `receive()`, except I replaced `pickle` with UTF-8 strings and improved `receive()` so it handles fragmented TCP reads properly:
 - **Header:** 4-byte unsigned integer in network byte order (`!I`).
 - **Payload:** UTF-8 string up to `BUF_SIZE = 4096` bytes.
 - **Fragmentation / Multiple Reads:** Because TCP is a byte stream, a single `recv()` call might return only half a packet or two packets stuck together. My `receive()` function first loops until it has read all 4 bytes of the length header (`while len(size_data) < size_len:`), unpacks the exact payload length `size`, and then loops again (`while len(buf) < size:`) reading only the remaining bytes needed for that specific message.
