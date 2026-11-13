@@ -1,21 +1,46 @@
-[2026-11-12 12:57:32] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 12:57:48] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 13:00:00] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 13:03:08] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 13:05:40] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 13:05:42] [JOIN] user1 connected (direct) from 127.0.0.1:49933
-[2026-11-12 13:05:48] [PUBLIC] [user1 -> ALL] hello
-[2026-11-12 13:05:57] [PRIVATE] [user1 -> user1] hello 2
-[2026-11-12 13:06:11] [PUBLIC] [user1 -> ALL] hello
-[2026-11-12 13:06:19] [LEAVE] user1 disconnected
-[2026-11-12 13:09:38] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
-[2026-11-12 13:09:42] [JOIN] user1 connected (direct) from 127.0.0.1:56259
-[2026-11-12 13:10:04] [JOIN] user2 connected (direct) from 127.0.0.1:61221
-[2026-11-12 13:10:22] [JOIN] user3 connected (direct) from 127.0.0.1:61628
-[2026-11-12 13:11:03] [PRIVATE] [user1 -> user2] hello this is a private message to user2
-[2026-11-12 13:11:14] [PRIVATE] [user2 -> user1] ok
-[2026-11-12 13:11:18] [PUBLIC] [user1 -> ALL] ok
-[2026-11-12 13:11:34] [PUBLIC] [user1 -> ALL] hello
-[2026-11-12 13:11:50] [PRIVATE] [user1 -> user3] this is a private message to user3 test 1
-[2026-11-12 13:11:53] [LEAVE] user1 disconnected
-[2026-11-12 13:12:03] [LEAVE] user3 disconnected
+[2026-11-13 22:14:59] [BOOT] DaemonDM listening (chat:5000, relay:5001, http:8000, ws:8765)
+[2026-11-13 22:16:22] [JOIN] Alice connected (direct) from 127.0.0.1:55423
+[2026-11-13 22:16:35] [JOIN] Bob connected (direct) from 127.0.0.1:52125
+[2026-11-13 22:17:45] [PUBLIC] [Alice -> ALL] Hey Bob, I'm testing the public chat for our project!
+[2026-11-13 22:18:01] [PUBLIC] [Bob -> ALL] Loud and clear Alice!
+[2026-11-13 22:19:35] [JOIN] Charlie connected (direct) from 127.0.0.1:52433
+[2026-11-13 22:20:26] [PRIVATE] [Alice -> Bob] Here is a secret DM just for you!
+[2026-11-13 22:21:06] [ERROR] DM failed: Alice -> NotRealUser (offline)
+[2026-11-13 22:21:32] [PUBLIC] [Charlie -> ALL] Hello everyone!
+[2026-11-13 22:27:16] [JOIN] Alice1 connected (direct) from 127.0.0.1:64461
+[2026-11-13 22:28:40] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:49] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:56] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:56] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:56] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:28:57] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:02] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:21] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:21] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:21] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:22] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:22] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:22] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:29:22] [REJECT] Direct client 127.0.0.1 tried using '*' prefix (*Hacker)
+[2026-11-13 22:32:05] [LEAVE] Alice1 disconnected
+[2026-11-13 22:32:18] [ERROR] Socket error for Charlie: [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-11-13 22:32:18] [LEAVE] Charlie disconnected
+[2026-11-13 22:33:38] [PUBLIC] [Bob -> ALL] 1
+[2026-11-13 22:33:39] [PUBLIC] [Bob -> ALL] 2
+[2026-11-13 22:33:39] [PUBLIC] [Bob -> ALL] 3
+[2026-11-13 22:33:40] [PUBLIC] [Bob -> ALL] 4
+[2026-11-13 22:33:40] [PUBLIC] [Bob -> ALL] 5
+[2026-11-13 22:33:41] [RATELIMIT] Bob -> Spam detected (5 msgs/5s). Muted for 10s.
+[2026-11-13 22:35:02] [PUBLIC] [Alice -> ALL] Testing the live websocket stream!
+[2026-11-13 22:36:02] [PRIVATE] [Alice -> Bob] Testing the live websocket stream for dm counter!
+[2026-11-13 22:42:25] [JOIN] *Dave connected (relay) from 127.0.0.1:52109
+[2026-11-13 22:42:46] [JOIN] *Temp connected (relay) from 127.0.0.1:58524
+[2026-11-13 22:43:04] [LEAVE] *Temp disconnected
+[2026-11-13 22:44:13] [PUBLIC] [*Dave -> ALL] Hello from the relay proxy!
+[2026-11-13 22:44:42] [PUBLIC] [Alice -> ALL] Hey *Dave, I see your star prefix!
+[2026-11-13 22:49:42] [LEAVE] Alice disconnected
